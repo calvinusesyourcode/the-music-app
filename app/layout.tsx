@@ -1,3 +1,6 @@
+'use client';
+
+
 import "@/styles/globals.css"
 import { Metadata } from "next"
 
@@ -7,6 +10,8 @@ import { cn } from "@/lib/utils"
 import { SiteHeader } from "@/components/site-header"
 import { TailwindIndicator } from "@/components/tailwind-indicator"
 import { ThemeProvider } from "@/components/theme-provider"
+import { createContext, useContext, useEffect } from "react"
+import { AppContext, AppContextObject } from "@/components/app-context";
 
 export const metadata: Metadata = {
   title: {
@@ -30,10 +35,26 @@ interface RootLayoutProps {
 }
 
 export default function RootLayout({ children }: RootLayoutProps) {
+  let audio1 = new Audio('init.mp3');
+  let audio2 = new Audio('boom.mp3');
+  
+  
   return (
     <>
       <html lang="en" suppressHydrationWarning>
         <head />
+        <AppContext.Provider value={{
+          playMusic: (newSrc: string) => {
+            audio1.pause();
+            audio1.src = newSrc;
+            audio1.play();
+          },
+          playSFX: (newSrc: string) => {
+            audio2.pause();
+            audio2.src = newSrc 
+            audio2.play();
+          }
+        }}>
         <body
           className={cn(
             "min-h-screen bg-background font-sans antialiased",
@@ -42,12 +63,13 @@ export default function RootLayout({ children }: RootLayoutProps) {
         >
           <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
             <div className="relative flex min-h-screen flex-col">
-              <SiteHeader />
+              {/* <SiteHeader /> */}
               <div className="flex-1">{children}</div>
             </div>
             <TailwindIndicator />
           </ThemeProvider>
         </body>
+        </AppContext.Provider>
       </html>
     </>
   )

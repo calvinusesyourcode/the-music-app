@@ -1,7 +1,9 @@
+'use client';
+
 import Link from "next/link"
 
 import { siteConfig } from "@/config/site"
-import { buttonVariants } from "@/components/ui/button"
+import { Button, buttonVariants } from "@/components/ui/button"
 
 import {
   Card,
@@ -11,22 +13,23 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
-
+import { useContext } from "react";
+import { AppContext } from "@/components/app-context";
 
 export default function IndexPage() {
+  const { playMusic, playSFX } = useContext(AppContext);
   return (
-  <section>hi
+  <section className= "flex items-center h-screen">
     <Card className="mx-auto w-60">
       <CardHeader>
-        <CardTitle>Card Title</CardTitle>
-        <CardDescription>Card Description</CardDescription>
+        <CardTitle>Welcome!</CardTitle>
+        <CardDescription>I'm glad you made it.</CardDescription>
       </CardHeader>
-      <CardContent>
-        <p>Card Content</p>
+      <CardContent className="flex gap-3">
+        <Link href="/welcome"><Button>Continue</Button></Link>
+        <Button onClick={() => playMusic('dan.mp3')}>Play</Button>
+        <Button onClick={() => playSFX('boom.mp3')}>Play</Button>
       </CardContent>
-      <CardFooter>
-        <p>Card Footer</p>
-      </CardFooter>
     </Card>
 
   </section>
